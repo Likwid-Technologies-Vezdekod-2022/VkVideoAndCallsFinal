@@ -45,16 +45,8 @@ def get_next_circle_keyboard():
 
 def get_main_menu_keyboard():
     button_rows = [
-        [KeyBoardButton(text='Звонок')]
-    ]
-    return get_keyboard(button_rows)
-
-
-def get_select_collection_keyboard():
-    button_rows = [
-        [KeyBoardButton(text='Загрузить свою', color=VkKeyboardColor.POSITIVE)],
-        [KeyBoardButton(text='Стандартная')],
-        [KeyBoardButton(text='Основное меню', color=VkKeyboardColor.SECONDARY)]
+        [KeyBoardButton(text='Звонок')],
+        [KeyBoardButton(text='Колл-центр')]
     ]
     return get_keyboard(button_rows)
 
@@ -66,41 +58,18 @@ def get_back_keyboard():
     return get_keyboard(button_rows)
 
 
-def get_multiplayer_keyboard():
+def get_call_center_keyboard():
     button_rows = [
-        [KeyBoardButton(text='Создать игру', color=VkKeyboardColor.POSITIVE)],
-        [KeyBoardButton(text='Создать игру с ведущим', color=VkKeyboardColor.POSITIVE)],
-        [KeyBoardButton(text='Найти игру')],
+        [KeyBoardButton(text='Посетитель')],
+        [KeyBoardButton(text='Оператор')],
         [KeyBoardButton(text='Основное меню', color=VkKeyboardColor.SECONDARY)]
     ]
     return get_keyboard(button_rows)
 
 
-def get_connect_to_game_keyboard(game_id):
+def get_end_operator_work_keyboard():
     button_rows = [
-        [KeyBoardButton(text=f'Подключиться к игре #{game_id}')],
+        [KeyBoardButton(text='Завершить работу')],
     ]
-    return get_keyboard(button_rows, inline=True)
 
-
-def get_wait_circle_keyboard():
-    button_rows = [
-        [KeyBoardButton(text='Таблица результатов')],
-        [KeyBoardButton(text='Покинуть игру', color=VkKeyboardColor.NEGATIVE)]
-    ]
-    return get_keyboard(button_rows)
-
-
-def get_leave_game_keyboard():
-    button_rows = [
-        [KeyBoardButton(text='Покинуть игру', color=VkKeyboardColor.NEGATIVE)]
-    ]
-    return get_keyboard(button_rows)
-
-
-def get_start_multiplayer_game_keyboard():
-    button_rows = [
-        [KeyBoardButton(text='Начать игру', color=VkKeyboardColor.POSITIVE)],
-        [KeyBoardButton(text='Покинуть игру', color=VkKeyboardColor.NEGATIVE)]
-    ]
     return get_keyboard(button_rows)
