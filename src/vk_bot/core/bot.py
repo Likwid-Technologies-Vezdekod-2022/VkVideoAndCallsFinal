@@ -213,6 +213,7 @@ class VkBot:
                 return
 
             operator.user = None
+            operator.free = True
             operator.save()
 
             self.send_message(user_id=user.chat_id, text=f'Вы завершили свою работу',
