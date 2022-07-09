@@ -89,7 +89,7 @@ def get_new_streams():
             image_draw.text((image_text_x + off, image_text_y - off), caption_new, font=font, fill=shadow_color)
 
         # пишем текст на изображении
-        image_draw.text((image_text_x, image_text_y), caption_new, fill=(255, 255, 255), font=font, align='center')
+        image_draw.text((image_text_x, image_text_y), caption_new, fill=(255, 255, 255), font=font)
 
         pix = numpy.array(img)
         clips.append(editor.ImageClip(pix).set_duration(5))
