@@ -24,6 +24,8 @@ class Operator(models.Model):
 
     url = models.TextField(blank=True)
 
+    free = models.BooleanField(default=True)
+
     creation_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 

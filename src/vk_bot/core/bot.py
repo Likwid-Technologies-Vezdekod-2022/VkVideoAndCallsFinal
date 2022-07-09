@@ -173,6 +173,7 @@ class VkBot:
                               keyboard=keyboards.get_end_operator_work_keyboard())
 
             return
+
         elif event_text.lower() == 'завершить работу':
             if not user.operator:
                 self.send_not_understand_message(user)
@@ -183,6 +184,23 @@ class VkBot:
 
             self.send_message(user_id=user.chat_id, text=f'Вы завершили свою работу',
                               keyboard=keyboards.get_main_menu_keyboard())
+
+        elif event_text.lower() == 'посетитель':
+            operator = models.Operator.objects.filter(free=True, user__isnull=False).first()
+            if not operator:
+                self.send_message(user_id=user.chat_id, text=f'Все операторы сейчас заняты. Попробуйте позже',
+                                  keyboard=keyboards.get_call_center_keyboard())
+                return
+
+            self.send_message(user_id=user.chat_id, text=f'Ссылка для подключения:\n'
+                                                         f'{operator.url}',
+                              keyboard=keyboards.get_main_menu_keyboard())
+
+            operator.free = False
+            operator.save()
+
+            self.send_message(user_id=operator.user.chat_id, text=f'К вам подключается пользователь '
+                                                                  f'{user.name}. Будьте готовы 😉')
 
         else:
             self.send_not_understand_message(user)
@@ -206,6 +224,7 @@ class VkBot:
             if created:
                 call_data = self.start_call()
                 operator.url = call_data["join_link"]
+                operator.free = True
                 operator.save()
 
 

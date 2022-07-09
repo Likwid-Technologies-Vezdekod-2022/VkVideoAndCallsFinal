@@ -11,5 +11,5 @@ class VkUserAdmin(admin.ModelAdmin):
 
 @admin.register(models.Operator)
 class OperatorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'number', 'url')
+    list_display = ('id', 'user', 'free', 'number', 'url')
     ordering = ['-update_date']
