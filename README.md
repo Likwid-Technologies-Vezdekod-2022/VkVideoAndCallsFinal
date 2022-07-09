@@ -25,13 +25,21 @@
 pip install -r requirements.txt
 ```
 
-2. Применить миграции
+2. Задать переменные окружения в фале `.env` (пример `.env.example`)
+```
+DEBUG=True # режим запуска (True, False)
+SECRET_KEY=test # секретный ключ (необходим для работы Django)
+VK_BOT_TOKEN= # токен бота
+VK_TOKEN_ACCESS_TOKEN= # токен пользователя для работы VK звонков
+```
+
+3. Применить миграции
 
 ```
 python manage.py migrate
 ```
 
-3. Запустить бота
+4. Запустить бота
 
 ```
 python manage.py start_vk_bot
