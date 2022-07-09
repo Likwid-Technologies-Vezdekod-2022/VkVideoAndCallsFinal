@@ -45,8 +45,7 @@ def get_next_circle_keyboard():
 
 def get_main_menu_keyboard():
     button_rows = [
-        [KeyBoardButton(text='Одиночная игра')],
-        [KeyBoardButton(text='Мультиплеер')]
+        [KeyBoardButton(text='Звонок')]
     ]
     return get_keyboard(button_rows)
 

@@ -8,7 +8,7 @@ from vk_api.keyboard import VkKeyboard
 from vk_api.longpoll import VkLongPoll, VkEventType, Event
 
 from config.logger import logger
-from config.settings import VK_BOT_TOKEN
+from config.settings import VK_BOT_TOKEN, VK_TOKEN_ACCESS_TOKEN
 from vk_bot.core import keyboards
 from vk_bot import models
 
@@ -28,6 +28,8 @@ class VkBot:
         self.vk_bot = vk_api.VkApi(token=token)
         self.long_poll = VkLongPoll(self.vk_bot)
         self.upload = VkUpload(self.vk_bot)
+        self.vk_standalone = vk_api.VkApi(token=VK_TOKEN_ACCESS_TOKEN)
+
         self.next_step_users: {str: NextStep} = {}
 
     def send_message(self, user_id: str, text, keyboard: VkKeyboard = None):
@@ -45,8 +47,6 @@ class VkBot:
             values['keyboard'] = keyboard.get_keyboard(),
 
         self.vk_bot.method('messages.send', values)
-
-
 
     def polling(self):
         """
@@ -138,6 +138,13 @@ class VkBot:
             self.send_message(user_id=user.chat_id,
                               text='Hellooo!!!')
             return
+        elif event_text.lower() == 'звонок':
+            call_data = self.start_call()
+            self.send_message(user_id=user.chat_id, text=f'Звонок создан✅\n\n'
+                                                         f'Ссылка для подключения:\n'
+                                                         f'{call_data["join_link"]}')
+
+
         else:
             self.send_not_understand_message(user)
 
@@ -148,6 +155,10 @@ class VkBot:
         self.send_message(user_id=user.chat_id, text=f'Я вас не понял 🙈\n'
                                                      f'Воспользуйтесь клавиатурой😉',
                           keyboard=keyboards.get_main_menu_keyboard())
+
+    def start_call(self) -> dict[str, str]:
+        response = self.vk_standalone.method('messages.startCall')
+        return response
 
 
 bot = VkBot(VK_BOT_TOKEN)

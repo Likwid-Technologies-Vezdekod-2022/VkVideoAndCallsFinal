@@ -118,3 +118,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
 VK_BOT_TOKEN = env('VK_BOT_TOKEN')
+VK_TOKEN_ACCESS_TOKEN = env('VK_TOKEN_ACCESS_TOKEN')
