@@ -134,11 +134,32 @@ class VkBot:
         Обработка текстовых сообщений.
         """
 
+        start_messages_text = ['начать', 'start']
+        operators_allowed_methods = ['свободно', 'завершить работу']
+
         event_text = event.text
 
-        if event_text.lower() in ['начать', 'start']:
+        try:
+            if user.operator \
+                    and event_text.lower() not in start_messages_text \
+                    and event_text.lower() not in operators_allowed_methods:
+                self.send_message(user_id=user.chat_id, text=f'Воспользуйтесь клавиатурой',
+                                  keyboard=keyboards.get_operator_keyboard())
+                return
+        except:
+            pass
+
+        if event_text.lower() in start_messages_text:
             self.send_message(user_id=user.chat_id, text=f'Чат бот для звонков',
                               keyboard=keyboards.get_main_menu_keyboard())
+
+            try:
+                operator = user.operator
+                operator.user = None
+                operator.free = True
+                operator.save()
+            except:
+                pass
 
         elif event_text.lower() == 'основное меню':
             self.send_message(user_id=user.chat_id, text=f'Основное меню',
@@ -162,6 +183,7 @@ class VkBot:
                 return
 
             operator.user = user
+            operator.free = True
             operator.save()
 
             self.send_message(user_id=user.chat_id, text=f'Вы стали оператором ✅\n\n'
@@ -170,11 +192,12 @@ class VkBot:
                               keyboard=keyboards.get_operator_keyboard())
 
         elif event_text.lower() == 'свободно':
-            if not user.operator:
+            try:
+                operator = user.operator
+            except:
                 self.send_not_understand_message(user)
                 return
 
-            operator = user.operator
             operator.free = True
             operator.save()
 
@@ -182,12 +205,13 @@ class VkBot:
                                                          f'Ожидайте присоединения пользователя.',
                               keyboard=keyboards.get_operator_keyboard())
 
-
         elif event_text.lower() == 'завершить работу':
-            if not user.operator:
+            try:
+                operator = user.operator
+            except:
                 self.send_not_understand_message(user)
                 return
-            operator = user.operator
+
             operator.user = None
             operator.save()
 
