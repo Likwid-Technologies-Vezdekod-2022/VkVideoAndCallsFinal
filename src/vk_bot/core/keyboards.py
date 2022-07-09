@@ -67,9 +67,10 @@ def get_call_center_keyboard():
     return get_keyboard(button_rows)
 
 
-def get_end_operator_work_keyboard():
+def get_operator_keyboard():
     button_rows = [
-        [KeyBoardButton(text='Завершить работу')],
+        [KeyBoardButton(text='Свободно')],
+        [KeyBoardButton(text='Завершить работу', color=VkKeyboardColor.SECONDARY)],
     ]
 
     return get_keyboard(button_rows)

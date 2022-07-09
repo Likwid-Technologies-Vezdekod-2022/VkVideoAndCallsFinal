@@ -139,23 +139,20 @@ class VkBot:
         if event_text.lower() in ['начать', 'start']:
             self.send_message(user_id=user.chat_id, text=f'Чат бот для звонков',
                               keyboard=keyboards.get_main_menu_keyboard())
-            return
+
         elif event_text.lower() == 'основное меню':
             self.send_message(user_id=user.chat_id, text=f'Основное меню',
                               keyboard=keyboards.get_main_menu_keyboard())
-            return
 
         elif event_text.lower() == 'звонок':
             call_data = self.start_call()
             self.send_message(user_id=user.chat_id, text=f'Звонок создан ✅\n\n'
                                                          f'Ссылка для подключения:\n'
                                                          f'{call_data["join_link"]}')
-            return
 
         elif event_text.lower() == 'колл-центр':
             self.send_message(user_id=user.chat_id, text=f'Выберите роль',
                               keyboard=keyboards.get_call_center_keyboard())
-            return
 
         elif event_text.lower() == 'оператор':
             operator = models.Operator.objects.filter(user=None).first()
@@ -170,9 +167,21 @@ class VkBot:
             self.send_message(user_id=user.chat_id, text=f'Вы стали оператором ✅\n\n'
                                                          f'Ссылка для подключения к звонку:\n'
                                                          f'{operator.url}',
-                              keyboard=keyboards.get_end_operator_work_keyboard())
+                              keyboard=keyboards.get_operator_keyboard())
 
-            return
+        elif event_text.lower() == 'свободно':
+            if not user.operator:
+                self.send_not_understand_message(user)
+                return
+
+            operator = user.operator
+            operator.free = True
+            operator.save()
+
+            self.send_message(user_id=user.chat_id, text=f'Ваша линия свободна. '
+                                                         f'Ожидайте присоединения пользователя.',
+                              keyboard=keyboards.get_operator_keyboard())
+
 
         elif event_text.lower() == 'завершить работу':
             if not user.operator:
@@ -204,7 +213,6 @@ class VkBot:
 
         else:
             self.send_not_understand_message(user)
-            return
 
     def send_in_development_message(self, user):
         self.send_message(user_id=user.chat_id, text=f'Этот раздел находится в разработке 🔧')
